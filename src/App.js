@@ -1,9 +1,10 @@
 import React from "react";
-import SearchUser from "./components/SearchUser";
+import Page from "./page/Page";
+
 function App() {
   return (
     <div className="App">
-      <SearchUser />
+      <Page />
     </div>
   );
 }

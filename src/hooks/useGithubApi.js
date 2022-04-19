@@ -1,19 +1,28 @@
-import React from "react";
-import { useReducer, useState, useEffect, useCallback } from "react";
+import React, { useReducer, useState, useEffect, useCallback } from "react";
+import getUser from "../helpers/getUser";
 
 const URL = "https://api.github.com/users/";
 let initialstate = {
-  users: [],
+  users: {},
   isLoading: false,
   isError: false,
 };
 const githubUsersReducer = (state, action) => {
   switch (action.type) {
     case "LOADING":
-      state = { ...state, isLoading: action.payload };
-      break;
+      return (state = { ...state, isLoading: true });
+
+    case "USER":
+      return (state = {
+        ...state,
+        isLoading: false,
+        users: { ...action.payload },
+      });
+    case "ERROR":
+      return (state = { ...state, isLoading: false, isError: true });
+    default:
+      return initialstate;
   }
-  return initialstate;
 };
 
 const useGithubApi = () => {
@@ -22,25 +31,28 @@ const useGithubApi = () => {
     initialstate
   );
 
-  const [searchUsersByName, setSearchUsersByName] = useState("");
+  const [searchUsersByName, setSearchUsersByName] = useState();
 
   const fetchFromGithub = useCallback(async () => {
-    dispatchGithubUsers({ type: "LOADING", payload: true });
+    dispatchGithubUsers({ type: "LOADING" });
     try {
-      const response = await fetch(`${URL}${"Miriani92"}`);
-      const data = await response.json();
-      if (response.ok) {
-        console.log(data);
+      const response = await fetch(`${URL}${"gaearon"}`);
+
+      if (response.status >= 200 && response.status <= 299) {
+        const data = await response.json();
+        const userInfo = getUser(data);
+        dispatchGithubUsers({ type: "USER", payload: userInfo });
       } else {
+        throw Error(response.statusText);
       }
     } catch (error) {
-      console.log(error);
+      dispatchGithubUsers({ type: "ERROR", payload: error.message });
     }
   }, [searchUsersByName]);
   useEffect(() => {
     fetchFromGithub();
   }, [URL, searchUsersByName]);
-  return { setSearchUsersByName, searchUsersByName };
+  return { setSearchUsersByName, searchUsersByName, githubUsers };
 };
 
 export default useGithubApi;
