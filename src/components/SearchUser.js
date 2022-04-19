@@ -1,10 +1,9 @@
 import React from "react";
-import useGithubApi from "../hooks/useGithubApi";
 
 const SearchUser = () => {
-  const { setSearchUsersByName, searchUsersByName } = useGithubApi();
   const submitName = (e) => {
     e.preventDefault();
+    setSearchUsersByName("");
   };
   return (
     <form onSubmit={submitName}>

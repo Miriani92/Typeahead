@@ -1,6 +1,13 @@
-import React, { useReducer, useState, useEffect, useCallback } from "react";
+import React, {
+  useState,
+  useReducer,
+  useContext,
+  useCallback,
+  useEffect,
+} from "react";
 import getUser from "../helpers/getUser";
 
+const GithubUserContext = React.createContext();
 const URL = "https://api.github.com/users/";
 let initialstate = {
   users: {},
@@ -25,18 +32,17 @@ const githubUsersReducer = (state, action) => {
   }
 };
 
-const useGithubApi = () => {
+const GithubUserProvider = ({ children }) => {
+  const [searchUsersByName, setSearchUsersByName] = useState("");
   const [githubUsers, dispatchGithubUsers] = useReducer(
     githubUsersReducer,
     initialstate
   );
 
-  const [searchUsersByName, setSearchUsersByName] = useState();
-
   const fetchFromGithub = useCallback(async () => {
     dispatchGithubUsers({ type: "LOADING" });
     try {
-      const response = await fetch(`${URL}${"gaearon"}`);
+      const response = await fetch(`${URL}${searchUsersByName}`);
 
       if (response.status >= 200 && response.status <= 299) {
         const data = await response.json();
@@ -50,9 +56,16 @@ const useGithubApi = () => {
     }
   }, [searchUsersByName]);
   useEffect(() => {
-    fetchFromGithub();
+    if (searchUsersByName) {
+      fetchFromGithub();
+    }
   }, [URL, searchUsersByName]);
-  return { setSearchUsersByName, searchUsersByName, githubUsers };
+  <GithubUserContext.Provider value={"miriani"}>
+    {children}
+  </GithubUserContext.Provider>;
 };
 
-export default useGithubApi;
+export const useGithubUserContext = () => {
+  return useContext(GithubUserContext);
+};
+export { GithubUserContext, GithubUserProvider };
