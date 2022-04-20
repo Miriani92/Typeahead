@@ -1,6 +1,8 @@
 import React from "react";
+import { useGithubUserContext } from "../context/githubUserContext";
 
 const SearchUser = () => {
+  const { setSearchUsersByName, searchUsersByName } = useGithubUserContext();
   const submitName = (e) => {
     e.preventDefault();
     setSearchUsersByName("");

@@ -1,9 +1,9 @@
 import React, {
   useState,
-  useReducer,
   useContext,
-  useCallback,
   useEffect,
+  useReducer,
+  useCallback,
 } from "react";
 import getUser from "../helpers/getUser";
 
@@ -56,16 +56,25 @@ const GithubUserProvider = ({ children }) => {
     }
   }, [searchUsersByName]);
   useEffect(() => {
-    if (searchUsersByName) {
-      fetchFromGithub();
-    }
+    const id = setTimeout(() => {
+      if (searchUsersByName) {
+        fetchFromGithub();
+      }
+    }, 1000);
+    return () => clearTimeout(id);
   }, [URL, searchUsersByName]);
-  <GithubUserContext.Provider value={"miriani"}>
-    {children}
-  </GithubUserContext.Provider>;
-};
 
+  return (
+    <GithubUserContext.Provider
+      value={{ searchUsersByName, setSearchUsersByName, githubUsers }}
+    >
+      {children}
+    </GithubUserContext.Provider>
+  );
+};
+// make sure use
 export const useGithubUserContext = () => {
   return useContext(GithubUserContext);
 };
+
 export { GithubUserContext, GithubUserProvider };
