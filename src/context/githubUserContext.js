@@ -70,7 +70,7 @@ const GithubUserProvider = ({ children }) => {
       }
     }, 1000);
     return () => clearTimeout(id);
-  }, [URL, searchUsersByName]);
+  }, [searchUsersByName]);
 
   return (
     <GithubUserContext.Provider
