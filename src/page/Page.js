@@ -7,9 +7,8 @@ import { useGithubUserContext } from "../context/githubUserContext";
 
 const Page = () => {
   const { githubUsers, searchUsersByName } = useGithubUserContext();
-  const renderSuggestion = searchUsersByName.length > 0 && !githubUsers.isError;
-  console.log(searchUsersByName);
-
+  const renderSuggestion =
+    searchUsersByName.length > 0 && !githubUsers.error.isError;
   return (
     <Fragment>
       <SearchUser />

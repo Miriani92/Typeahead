@@ -12,7 +12,7 @@ const URL = "https://api.github.com/users/";
 let initialstate = {
   users: {},
   isLoading: false,
-  isError: false,
+  error: { isError: false, message: "" },
 };
 const githubUsersReducer = (state, action) => {
   switch (action.type) {
@@ -24,9 +24,14 @@ const githubUsersReducer = (state, action) => {
         ...state,
         isLoading: false,
         users: { ...action.payload },
+        error: { isError: false, message: "" },
       });
     case "ERROR":
-      return (state = { ...state, isLoading: false, isError: true });
+      return (state = {
+        ...state,
+        isLoading: false,
+        error: { isError: true, message: action.payload },
+      });
     default:
       return initialstate;
   }
@@ -43,7 +48,9 @@ const GithubUserProvider = ({ children }) => {
     dispatchGithubUsers({ type: "LOADING" });
     try {
       const response = await fetch(`${URL}${searchUsersByName}`);
-
+      if (!response.ok) {
+        throw Error("No users found with this name");
+      }
       if (response.status >= 200 && response.status <= 299) {
         const data = await response.json();
         const userInfo = getUser(data);
@@ -55,6 +62,7 @@ const GithubUserProvider = ({ children }) => {
       dispatchGithubUsers({ type: "ERROR", payload: error.message });
     }
   }, [searchUsersByName]);
+  console.log(githubUsers.users);
   useEffect(() => {
     const id = setTimeout(() => {
       if (searchUsersByName) {
