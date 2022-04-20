@@ -1,4 +1,5 @@
-import React, { Fragment } from "react";
+import React from "react";
+import styles from "./Page.module.css";
 import SearchUser from "../components/SearchUser";
 import Suggestion from "../components/Suggestion";
 import Error from "../components/Error";
@@ -9,11 +10,17 @@ const Page = () => {
   const { githubUsers, searchUsersByName } = useGithubUserContext();
   const renderSuggestion =
     searchUsersByName.length > 0 && !githubUsers.error.isError;
+  const showLoading = githubUsers.isLoading;
   return (
-    <Fragment>
+    <main className={styles.pageWrapper}>
       <SearchUser />
-      {renderSuggestion && <Suggestion user={githubUsers.users} />}
-    </Fragment>
+      {showLoading && <Loading />}
+      {renderSuggestion ? (
+        <Suggestion user={githubUsers.users} />
+      ) : (
+        <Error message={githubUsers.error.message} />
+      )}
+    </main>
   );
 };
 

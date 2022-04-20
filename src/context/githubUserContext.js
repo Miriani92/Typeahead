@@ -80,7 +80,6 @@ const GithubUserProvider = ({ children }) => {
     </GithubUserContext.Provider>
   );
 };
-// make sure use
 export const useGithubUserContext = () => {
   return useContext(GithubUserContext);
 };

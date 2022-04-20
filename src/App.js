@@ -4,7 +4,7 @@ import Page from "./page/Page";
 function App() {
   return (
     <div>
-      <Page />;
+      <Page />
     </div>
   );
 }
