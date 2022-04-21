@@ -2,10 +2,10 @@ import React, { Fragment } from "react";
 import styles from "./Suggestion.module.css";
 const Suggestion = ({ user }) => {
   const { avatar, profileLink, userName, loginName } = user;
-  const emptyUser = Object.keys(user).length === 0;
+  const emptyUserField = Object.keys(user).length === 0;
   return (
     <Fragment>
-      {!emptyUser && (
+      {!emptyUserField && (
         <div>
           <a
             href={profileLink}

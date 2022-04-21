@@ -1,4 +1,16 @@
 .loader {
-  width: 50px;
-  height: 50px;
+  width: 2.5rem;
+  height: 2.5rem;
+}
+@media screen and (max-width: 641px) {
+  .loader {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+}
+@media screen and (max-width: 240px) {
+  .loader {
+    width: 1rem;
+    height: 1rem;
+  }
 }

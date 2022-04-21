@@ -6,6 +6,7 @@ import React, {
   useCallback,
 } from "react";
 import getUser from "../helpers/getUser";
+import { githubUsersReducer } from "./reducer";
 
 const GithubUserContext = React.createContext();
 const URL = "https://api.github.com/users/";
@@ -13,28 +14,6 @@ let initialstate = {
   users: {},
   isLoading: false,
   error: { isError: false, message: "" },
-};
-const githubUsersReducer = (state, action) => {
-  switch (action.type) {
-    case "LOADING":
-      return (state = { ...state, isLoading: true });
-
-    case "USER":
-      return (state = {
-        ...state,
-        isLoading: false,
-        users: { ...action.payload },
-        error: { isError: false, message: "" },
-      });
-    case "ERROR":
-      return (state = {
-        ...state,
-        isLoading: false,
-        error: { isError: true, message: action.payload },
-      });
-    default:
-      return initialstate;
-  }
 };
 
 const GithubUserProvider = ({ children }) => {
@@ -68,7 +47,7 @@ const GithubUserProvider = ({ children }) => {
       if (searchUsersByName) {
         fetchFromGithub();
       }
-    }, 1000);
+    }, 500);
     return () => clearTimeout(id);
   }, [searchUsersByName]);
 

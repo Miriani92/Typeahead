@@ -1,4 +1,19 @@
 .input {
-  width: 400px;
-  height: 35px;
+  background-color: rgba(193, 191, 209, 0.712);
+  margin-top: 100px;
+  width: min(25rem, 67vw);
+  height: 2.5rem;
+  border-style: none;
+  border-bottom: 1px solid;
+  font-size: clamp(0.7rem, 12vw + 0.2rem, 1.2rem);
+}
+.input:focus {
+  outline: none;
+}
+@media screen and (max-width: 641px) {
+  .input {
+    max-width: 25rem;
+    height: 2.2rem;
+    font-size: 0.8rem;
+  }
 }
