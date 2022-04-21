@@ -41,7 +41,6 @@ const GithubUserProvider = ({ children }) => {
       dispatchGithubUsers({ type: "ERROR", payload: error.message });
     }
   }, [searchUsersByName]);
-  console.log(githubUsers.users);
   useEffect(() => {
     const id = setTimeout(() => {
       if (searchUsersByName) {
