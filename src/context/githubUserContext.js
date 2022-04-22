@@ -48,7 +48,7 @@ const GithubUserProvider = ({ children }) => {
       }
     }, 500);
     return () => clearTimeout(id);
-  }, [searchUsersByName]);
+  }, [searchUsersByName, fetchFromGithub]);
 
   return (
     <GithubUserContext.Provider
